@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: customers
+  - name: dim_customers
     description: One record per customer
     columns:
       - name: customer_id
@@ -11,6 +11,47 @@ models:
           - not_null
       - name: first_order_date
         description: NULL when a customer has not yet placed an order.
+      - name: lifetime_value
+        description: non-negative total payment amount, 0 when a customer has not yet complete any payment.
+
+  - name: fct_orders
+    description: One record per order
+    columns:
+      - name: order_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: amount
+        description: amount of all successed orders.
+        tests:
+          - not_null
+      - name: customer_id
+        tests:
+          - relationships:
+              to: ref('stg_customers')
+              field: customer_id
+
+  - name: stg_stripe
+    description: This model cleans up payment data
+    columns:
+      - name: payment_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: status
+        description: payment state
+        tests:
+          - accepted_values: 
+              values: 
+                ["success", "fail"]
+      - name: order_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
 
   - name: stg_customers
     description: This model cleans up customer data
@@ -32,10 +73,8 @@ models:
       - name: status
         tests:
           - accepted_values:
-              values: ['placed', 'shipped', 'completed', 'return_pending', 'returned']
+              values:
+                ["placed", "shipped", "completed", "return_pending", "returned"]
       - name: customer_id
         tests:
           - not_null
-          - relationships:
-              to: ref('stg_customers')
-              field: customer_id
