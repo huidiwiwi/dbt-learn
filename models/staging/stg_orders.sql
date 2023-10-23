@@ -1,7 +1,3 @@
-select
-    id as order_id,
-    user_id as customer_id,
-    order_date,
-    status
+select id as customer_id, first_name, last_name
 
-from `dbt-tutorial`.jaffle_shop.orders
+from `dbt-tutorial`.jaffle_shop.customers

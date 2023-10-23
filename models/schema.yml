@@ -12,7 +12,7 @@ models:
       - name: first_order_date
         description: NULL when a customer has not yet placed an order.
       - name: lifetime_value
-        description: non-negative total payment amount, 0 when a customer has not yet complete any payment.
+        description: non-negative total payment amount.
 
   - name: fct_orders
     description: One record per order
@@ -23,7 +23,7 @@ models:
           - unique
           - not_null
       - name: amount
-        description: amount of all successed orders.
+        description: amount of net payment of all orders.
         tests:
           - not_null
       - name: customer_id
@@ -43,9 +43,8 @@ models:
       - name: status
         description: payment state
         tests:
-          - accepted_values: 
-              values: 
-                ["success", "fail"]
+          - accepted_values:
+              values: ["success", "fail"]
       - name: order_id
         tests:
           - not_null
