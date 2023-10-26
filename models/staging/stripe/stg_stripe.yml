@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_payments
+    description: This model cleans up payment data
+    columns:
+      - name: payment_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: status
+        description: payment state
+        tests:
+          - accepted_values:
+              values: ["success", "fail"]
+      - name: order_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_orders')
+              field: order_id
+
