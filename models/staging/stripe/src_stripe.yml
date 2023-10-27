@@ -2,10 +2,18 @@ version: 2
 
 sources:
   - name: stripe
+    description: A clone of stripe database
     database: dbt-tutorial
     schema: stripe
     tables:
       - name: payment
+        description: raw payment data
+        columns:
+          - name: id
+            description: primary key
+            tests:
+              - unique
+              - not_null
         loaded_at_field: _batched_at
         freshness:
           warn_after: { count: 12, period: hour }
