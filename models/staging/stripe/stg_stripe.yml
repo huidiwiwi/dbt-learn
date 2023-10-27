@@ -10,11 +10,12 @@ models:
           - unique
           - not_null
       - name: status
-        description: payment state
+        description: "{{ doc('payment_status')}}"
         tests:
           - accepted_values:
               values: ["success", "fail"]
       - name: order_id
+        description: Foreign key to stg_orders.order_id
         tests:
           - not_null
           - relationships:
