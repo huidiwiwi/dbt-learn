@@ -23,7 +23,7 @@ models:
           - unique
           - not_null
       - name: amount
-        description: amount of net payment of all orders.
+        description: amount of successed payments.
         tests:
           - not_null
       - name: customer_id
@@ -32,3 +32,26 @@ models:
               to: ref('stg_customers')
               field: customer_id
 
+  - name: int_orders__pivoted
+    description: order pivoted on payment methodes
+    columns:
+      - name: order_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+          - dbt_utils.cardinality_equality:
+              field: order_id
+              to: ref('fct_orders')
+
+  - name: all_dates
+    description: "date spine for year 2020"
+    columns:
+      - name: date_day
+        description: datestamp
+        tests:
+          - unique
+          - not_null
+          - dbt_utils.sequential_values:
+              interval: 1
+              datepart: "day"
