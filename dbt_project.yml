@@ -31,7 +31,10 @@ clean-targets: # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 models:
   jaffle_shop:
-    # Applies to all files under models/example/
+    # Applies to all files under models/
+    +grant_access_to:
+    - project: proven-citizen-402911
+      dataset: jaffle_shop
     staging:
       +materialized: view
     marts:

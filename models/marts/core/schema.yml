@@ -13,6 +13,9 @@ models:
         description: NULL when a customer has not yet placed an order.
       - name: lifetime_value
         description: non-negative total payment amount.
+    config:
+      grants:
+        roles/bigquery.dataViewer: ['user:foo@bar.com']
 
   - name: fct_orders
     description: One record per order
